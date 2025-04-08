@@ -7,10 +7,19 @@ public class Level : MonoBehaviour
     private const float PipeWidth = 7.8f;
     private const float PipeHeadHeight = 3.75f;
     private const float CameraOrthoSize = 50f;
-    private const float pipeSpeed = 3f;
+    private const float pipeSpeed = 30f;
+    private float _leftBound = 0;
     private List<Pipe> _pipes = new List<Pipe>();
+    private float _pipeSpawnTimer = 0;
+    private float pipeSpawnTimerMax = 0;
+    
     private void Start()
     {
+        pipeSpawnTimerMax = 0.5f;
+        var cameraOrtho = Camera.main.orthographicSize * 2;
+        var cameraWith = cameraOrtho * Camera.main.aspect;
+        var cameraPositionX = Camera.main.transform.position.x;
+        _leftBound = cameraPositionX - (cameraWith / 2);
         CreateGap(50, 20, 20);
     }
 
@@ -22,9 +31,15 @@ public class Level : MonoBehaviour
     private void HandlePipeMovement()
     {
         if (_pipes.Count == 0) return;
-        foreach (var pipe in _pipes)
+        for (int i = 0; i < _pipes.Count; i++)
         {
-            pipe.Move();
+            _pipes[i].Move();
+            if (_pipes[i].GetPositionX() <= _leftBound)
+            {
+                _pipes[i].DestroySelf();
+                _pipes.RemoveAt(i);
+                i--;
+            }
         }
     }
 
@@ -80,6 +95,13 @@ public class Level : MonoBehaviour
         {
             _pipeHead.Translate(Vector3.left * pipeSpeed * Time.deltaTime);
             _pipeBody.Translate(Vector3.left * pipeSpeed * Time.deltaTime);
+        }
+        public float GetPositionX() => _pipeHead.position.x;
+
+        public void DestroySelf()
+        {
+            Destroy(_pipeHead.gameObject);
+            Destroy(_pipeBody.gameObject);
         }
     }
 }
