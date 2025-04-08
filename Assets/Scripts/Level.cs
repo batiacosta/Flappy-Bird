@@ -9,7 +9,7 @@ public class Level : MonoBehaviour
     private const float PipeWidth = 7.8f;
     private const float PipeHeadHeight = 3.75f;
     private const float CameraOrthoSize = 50f;
-    private const float pipeSpeed = 30f;
+    private const float PipeSpeed = 30f;
     private float _leftBound = 0;
     private List<Pipe> _pipes = new List<Pipe>();
     private float _pipeSpawnTimer = 0;
@@ -158,8 +158,8 @@ public class Level : MonoBehaviour
 
         public void Move()
         {
-            _pipeHead.Translate(Vector3.left * pipeSpeed * Time.deltaTime);
-            _pipeBody.Translate(Vector3.left * pipeSpeed * Time.deltaTime);
+            _pipeHead.Translate(Vector3.left * PipeSpeed * Time.deltaTime);
+            _pipeBody.Translate(Vector3.left * PipeSpeed * Time.deltaTime);
         }
         public float GetPositionX() => _pipeHead.position.x;
 
