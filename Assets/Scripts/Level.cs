@@ -9,10 +9,14 @@ public class Level : MonoBehaviour
     private const float CameraOrthoSize = 50f;
     private void Start()
     {
-        CreatePipe(50f, 0f, true);
-        CreatePipe(50f, 20f, false);
+        CreateGap(50, 20, 20);
     }
 
+    private void CreateGap(float gapY, float gapSize, float posX)
+    {
+        CreatePipe(gapY - gapSize / 2, posX, true);
+        CreatePipe(CameraOrthoSize*2 - gapY - gapSize/2, posX, false);
+    }
     private void CreatePipe(float height, float xPosition, bool createBottom)
     {
         var pipeHeadPositionY = 0f;
@@ -40,6 +44,5 @@ public class Level : MonoBehaviour
         var pipeBodyBoxCollider = pipeBody.gameObject.GetComponent<BoxCollider2D>();
         pipeBodyBoxCollider.size = new Vector2(PipeWidth, height);
         pipeBodyBoxCollider.offset = new Vector2(0f, height/2);
-        
     }
 }
