@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 public class Level : MonoBehaviour
 {
     private const float PipeWidth = 7.8f;
@@ -11,21 +13,50 @@ public class Level : MonoBehaviour
     private float _leftBound = 0;
     private List<Pipe> _pipes = new List<Pipe>();
     private float _pipeSpawnTimer = 0;
-    private float pipeSpawnTimerMax = 0;
-    
+    private float _pipeSpawnTimerMax = 0;
+    private float _gapSize = 0;
+
+    enum Difficulty
+    {
+        Easy, Medium, Hard, Impossible
+    }
+    private Difficulty _difficulty = Difficulty.Easy;
+    private int _spawnedPipes;
+
     private void Start()
     {
-        pipeSpawnTimerMax = 0.5f;
+        _pipeSpawnTimerMax = 1f;
+        SetDifficulty(Difficulty.Easy);
+        SetLeftBound();
+    }
+
+    private void SetLeftBound() // Can be public to be call when the screen resizes
+    {
         var cameraOrtho = Camera.main.orthographicSize * 2;
         var cameraWith = cameraOrtho * Camera.main.aspect;
         var cameraPositionX = Camera.main.transform.position.x;
         _leftBound = cameraPositionX - (cameraWith / 2);
-        CreateGap(50, 20, 20);
     }
 
     private void Update()
     {
         HandlePipeMovement();
+        HandlePipeSpawning();
+    }
+
+    private void HandlePipeSpawning()
+    {
+        _pipeSpawnTimer -= Time.deltaTime;
+        if (_pipeSpawnTimer < 0)
+        {
+            _pipeSpawnTimer += _pipeSpawnTimerMax;
+            var heightEdgeLimit = 10f;
+            var minHeight = _gapSize / 2 + heightEdgeLimit;
+            var totalHeight = CameraOrthoSize * 2;
+            var maxHeight = totalHeight - _gapSize / 2 - heightEdgeLimit;
+            var height = Random.Range(minHeight, maxHeight);
+            CreateGapPipes(50, height, -_leftBound + PipeWidth*2);
+        }
     }
 
     private void HandlePipeMovement()
@@ -43,10 +74,12 @@ public class Level : MonoBehaviour
         }
     }
 
-    private void CreateGap(float gapY, float gapSize, float posX)
+    private void CreateGapPipes(float gapY, float gapSize, float posX)
     {
         CreatePipe(gapY - gapSize / 2, posX, true);
         CreatePipe(CameraOrthoSize*2 - gapY - gapSize/2, posX, false);
+        _spawnedPipes++;
+        SetDifficulty(GetDifficulty());
     }
     private void CreatePipe(float height, float xPosition, bool createBottom)
     {
@@ -78,6 +111,38 @@ public class Level : MonoBehaviour
         
         var pipe = new Pipe(pipeHead, pipeBody);
         _pipes.Add(pipe);
+    }
+
+    private Difficulty GetDifficulty()
+    {
+        if (_spawnedPipes >= 30) return Difficulty.Impossible;
+        if (_spawnedPipes >= 20) return Difficulty.Hard;
+        if (_spawnedPipes >= 10) return Difficulty.Medium;
+        return Difficulty.Easy;
+    }
+
+    private void SetDifficulty(Difficulty difficulty)
+    {
+        Debug.Log(difficulty);
+        switch (difficulty)
+        {
+            case Difficulty.Impossible:
+                _gapSize = 24;
+                _pipeSpawnTimerMax = 0.8f;
+                break;
+            case Difficulty.Hard:
+                _gapSize = 33;
+                _pipeSpawnTimerMax = 1.0f;
+                break;
+            case Difficulty.Medium:
+                _gapSize = 40;
+                _pipeSpawnTimerMax = 1.1f;
+                break;
+            case Difficulty.Easy:
+                _gapSize = 50;
+                _pipeSpawnTimerMax = 1.2f;
+                break;
+        }
     }
 
     private class Pipe
