@@ -6,7 +6,7 @@ public static class Loader
 {
     public enum Scene
     {
-        GameScene, Loading
+        GameScene, Loading, MainMenu
     }
 
     public static void LoadScene(Scene  scene)
@@ -24,7 +24,7 @@ public static class Loader
 
     private static async Awaitable Await(Action action)
     {
-        await Awaitable.WaitForSecondsAsync(1);
+        await Awaitable.WaitForSecondsAsync(0.5f);
         action?.Invoke();
     }
 }
