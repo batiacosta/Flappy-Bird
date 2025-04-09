@@ -10,6 +10,7 @@ public class Level : MonoBehaviour
     public static Level instance { get; private set; }
     
     [SerializeField] private Transform lowestBoundary;
+    [SerializeField] private Transform[] clouds;
 
     private const float PipeWidth = 7.8f;
     private const float PipeHeadHeight = 3.75f;
@@ -90,6 +91,19 @@ public class Level : MonoBehaviour
         HandlePipeMovement();
         HandlePipeSpawning();
         HandleBounrariesMovement();
+        HandleCloudsMovement();
+    }
+
+    private void HandleCloudsMovement()
+    {
+        foreach (var cloud in clouds)
+        {
+            cloud.Translate(Vector3.left * PipeSpeed * Time.deltaTime);
+            if (cloud.position.x < _leftBound - cloud.GetComponent<SpriteRenderer>().bounds.size.x)
+            {
+                cloud.position = new Vector2(-_leftBound + cloud.GetComponent<SpriteRenderer>().bounds.size.x, cloud.position.y);
+            }
+        }
     }
 
     private void HandleBounrariesMovement()
