@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 
 public class Level : MonoBehaviour
 {
+    public static Level instance { get; private set; }
+
     private const float PipeWidth = 7.8f;
     private const float PipeHeadHeight = 3.75f;
     private const float CameraOrthoSize = 50f;
@@ -15,6 +17,7 @@ public class Level : MonoBehaviour
     private float _pipeSpawnTimer = 0;
     private float _pipeSpawnTimerMax = 0;
     private float _gapSize = 0;
+    private static float _achievedPipes = 0;
 
     enum Difficulty
     {
@@ -22,6 +25,11 @@ public class Level : MonoBehaviour
     }
     private Difficulty _difficulty = Difficulty.Easy;
     private int _spawnedPipes;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
@@ -64,8 +72,9 @@ public class Level : MonoBehaviour
         if (_pipes.Count == 0) return;
         for (int i = 0; i < _pipes.Count; i++)
         {
+            var pipePositionX = _pipes[i].GetPositionX();
             _pipes[i].Move();
-            if (_pipes[i].GetPositionX() <= _leftBound)
+            if (pipePositionX <= _leftBound)
             {
                 _pipes[i].DestroySelf();
                 _pipes.RemoveAt(i);
@@ -123,7 +132,6 @@ public class Level : MonoBehaviour
 
     private void SetDifficulty(Difficulty difficulty)
     {
-        Debug.Log(difficulty);
         switch (difficulty)
         {
             case Difficulty.Impossible:
@@ -145,10 +153,13 @@ public class Level : MonoBehaviour
         }
     }
 
+    public int GetSpawnedPipesNumber() => _spawnedPipes;
+
     private class Pipe
     {
         private Transform _pipeHead;
         private Transform _pipeBody;
+        private bool _hasPassedBird = false;
 
         public Pipe(Transform pipeHead, Transform pipeBody)
         {
@@ -160,6 +171,14 @@ public class Level : MonoBehaviour
         {
             _pipeHead.Translate(Vector3.left * PipeSpeed * Time.deltaTime);
             _pipeBody.Translate(Vector3.left * PipeSpeed * Time.deltaTime);
+            if (!_hasPassedBird)
+            {
+                if (_pipeHead.position.x < 0)
+                {
+                    _achievedPipes = _achievedPipes + 0.5f;
+                    _hasPassedBird = true;
+                }
+            }
         }
         public float GetPositionX() => _pipeHead.position.x;
 
@@ -169,4 +188,7 @@ public class Level : MonoBehaviour
             Destroy(_pipeBody.gameObject);
         }
     }
+    
+    public float GetAchievedPipes() => _achievedPipes;
+    
 }
