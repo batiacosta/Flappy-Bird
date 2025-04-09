@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class Level : MonoBehaviour
@@ -19,11 +20,17 @@ public class Level : MonoBehaviour
     private float _gapSize = 0;
     private static float _achievedPipes = 0;
 
-    enum Difficulty
+    private enum Difficulty
     {
         Easy, Medium, Hard, Impossible
     }
+
+    private enum State
+    {
+        WaitingToStart, Playing, Death
+    }
     private Difficulty _difficulty = Difficulty.Easy;
+    private State _state = State.WaitingToStart;
     private int _spawnedPipes;
 
     private void Awake()
@@ -33,9 +40,35 @@ public class Level : MonoBehaviour
 
     private void Start()
     {
+        _state = State.WaitingToStart;
         _pipeSpawnTimerMax = 1f;
         SetDifficulty(Difficulty.Easy);
         SetLeftBound();
+        Bird.instance.OnStartedPlaying += OnStartedPlaying;
+        Bird.instance.OnDeath += OnDeath;
+    }
+
+    private void OnStartedPlaying()
+    {
+        _state = State.Playing;
+    }
+
+    private void OnDestroy()
+    {
+        Bird.instance.OnStartedPlaying -= OnStartedPlaying;
+        Bird.instance.OnDeath -= OnDeath;
+    }
+
+    private void OnDeath()
+    {
+        _state = State.Death;
+        //RestartAfter(3);
+    }
+
+    private async Awaitable RestartAfter(float seconds)
+    {
+        await Awaitable.WaitForSecondsAsync(seconds);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void SetLeftBound() // Can be public to be call when the screen resizes
@@ -48,6 +81,7 @@ public class Level : MonoBehaviour
 
     private void Update()
     {
+        if (_state is State.Death or State.WaitingToStart) return;
         HandlePipeMovement();
         HandlePipeSpawning();
     }
