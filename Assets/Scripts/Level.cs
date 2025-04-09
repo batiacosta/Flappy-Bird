@@ -40,6 +40,7 @@ public class Level : MonoBehaviour
 
     private void Start()
     {
+        _achievedPipes = 0;
         _state = State.WaitingToStart;
         _pipeSpawnTimerMax = 1f;
         SetDifficulty(Difficulty.Easy);
@@ -62,7 +63,7 @@ public class Level : MonoBehaviour
     private void OnDeath()
     {
         _state = State.Death;
-        //RestartAfter(3);
+        Score.SetHighScore((int)Math.Round(_achievedPipes, 0));
     }
 
     private async Awaitable RestartAfter(float seconds)

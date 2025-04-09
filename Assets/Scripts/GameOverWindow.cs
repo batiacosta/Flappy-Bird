@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class GameOverWindow : MonoBehaviour
 {
     [SerializeField] private TMP_Text scoreText;
-    [SerializeField] private Button retyButton;
+    [SerializeField] private TMP_Text highScoreText;
 
     private void Start()
     {
@@ -24,7 +24,8 @@ public class GameOverWindow : MonoBehaviour
     private void OnDeath()
     {
         Show();
-        scoreText.text = Level.instance.GetAchievedPipes().ToString();
+        scoreText.text = "YOUR SCORE: " + Level.instance.GetAchievedPipes().ToString();
+        highScoreText.text = "HIGHEST SCORE: " + Score.GetHighScore().ToString();
     }
 
     public void Retry()
