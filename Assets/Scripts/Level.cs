@@ -8,6 +8,8 @@ using Random = UnityEngine.Random;
 public class Level : MonoBehaviour
 {
     public static Level instance { get; private set; }
+    
+    [SerializeField] private Transform lowestBoundary;
 
     private const float PipeWidth = 7.8f;
     private const float PipeHeadHeight = 3.75f;
@@ -19,6 +21,7 @@ public class Level : MonoBehaviour
     private float _pipeSpawnTimerMax = 0;
     private float _gapSize = 0;
     private static float _achievedPipes = 0;
+    private Vector3 _groundStartPosition;
 
     private enum Difficulty
     {
@@ -40,6 +43,7 @@ public class Level : MonoBehaviour
 
     private void Start()
     {
+        _groundStartPosition = lowestBoundary.position;
         _achievedPipes = 0;
         _state = State.WaitingToStart;
         _pipeSpawnTimerMax = 1f;
@@ -85,6 +89,16 @@ public class Level : MonoBehaviour
         if (_state is State.Death or State.WaitingToStart) return;
         HandlePipeMovement();
         HandlePipeSpawning();
+        HandleBounrariesMovement();
+    }
+
+    private void HandleBounrariesMovement()
+    {
+        lowestBoundary.Translate(Vector2.left * PipeSpeed * Time.deltaTime);
+        if (lowestBoundary.position.x < 0)
+        {
+            lowestBoundary.position = _groundStartPosition;
+        }
     }
 
     private void HandlePipeSpawning()
