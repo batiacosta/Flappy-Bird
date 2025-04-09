@@ -1,11 +1,14 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameOverWindow : MonoBehaviour
 {
     [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private Button retyButton;
 
     private void Start()
     {
@@ -26,6 +29,7 @@ public class GameOverWindow : MonoBehaviour
 
     public void Retry()
     {
+        SoundManager.PlaySound(SoundManager.Sound.ButtonClick);
         Loader.LoadScene(Loader.Scene.GameScene);
     }
 
@@ -41,6 +45,12 @@ public class GameOverWindow : MonoBehaviour
 
     public void MainMenu()
     {
+        SoundManager.PlaySound(SoundManager.Sound.ButtonClick);
         Loader.LoadScene(Loader.Scene.MainMenu);
+    }
+
+    public void ButtonOverPlaySound()
+    {
+        SoundManager.PlaySound(SoundManager.Sound.ButtonOver);
     }
 }

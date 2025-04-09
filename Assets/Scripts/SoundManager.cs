@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class SoundManager 
 {
@@ -28,4 +29,5 @@ public static class SoundManager
       Debug.LogError($"Sound {sound} not found");
       return null;
    }
+   
 }
