@@ -98,7 +98,7 @@ public class Level : MonoBehaviour
     {
         foreach (var cloud in clouds)
         {
-            cloud.Translate(Vector3.left * PipeSpeed * Time.deltaTime);
+            cloud.Translate(Vector3.left * PipeSpeed * 0.9f * Time.deltaTime);// 0.95 to create parallaxs
             if (cloud.position.x < _leftBound - cloud.GetComponent<SpriteRenderer>().bounds.size.x)
             {
                 cloud.position = new Vector2(-_leftBound + cloud.GetComponent<SpriteRenderer>().bounds.size.x, cloud.position.y);
