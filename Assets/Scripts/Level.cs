@@ -62,7 +62,7 @@ public class Level : MonoBehaviour
     private void OnDeath()
     {
         _state = State.Death;
-        RestartAfter(3);
+        //RestartAfter(3);
     }
 
     private async Awaitable RestartAfter(float seconds)

@@ -1,16 +1,41 @@
+using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameOverWindow : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private TMP_Text scoreText;
+
+    private void Start()
     {
-        
+        Bird.instance.OnDeath += OnDeath;
+        Hide();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDestroy()
     {
-        
+        Bird.instance.OnDeath -= OnDeath;
+    }
+
+    private void OnDeath()
+    {
+        Show();
+        scoreText.text = Level.instance.GetAchievedPipes().ToString();
+    }
+
+    public void Retry()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    private void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }
