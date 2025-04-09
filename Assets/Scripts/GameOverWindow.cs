@@ -38,4 +38,9 @@ public class GameOverWindow : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    public void MainMenu()
+    {
+        Loader.LoadScene(Loader.Scene.MainMenu);
+    }
 }
