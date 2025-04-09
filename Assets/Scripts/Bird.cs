@@ -49,7 +49,10 @@ public class Bird : MonoBehaviour
     private void Jump()
     {
         _rigidbody.linearVelocityY = Vector2.up.y * JUMP_VALUE;
-        SoundManager.PlaySound(SoundManager.Sound.BirdJump);
+        if (_state == State.Playing)
+        {
+            SoundManager.PlaySound(SoundManager.Sound.BirdJump);
+        }
     }
 
     private void SetState(State state)
