@@ -26,7 +26,7 @@ public class GameOverWindow : MonoBehaviour
 
     public void Retry()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Loader.LoadScene(Loader.Scene.GameScene);
     }
 
     private void Show()
