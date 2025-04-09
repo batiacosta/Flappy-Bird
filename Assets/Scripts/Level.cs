@@ -27,10 +27,10 @@ public class Level : MonoBehaviour
 
     private enum State
     {
-        Playing, Death
+        WaitingToStart, Playing, Death
     }
     private Difficulty _difficulty = Difficulty.Easy;
-    private State _state = State.Playing;
+    private State _state = State.WaitingToStart;
     private int _spawnedPipes;
 
     private void Awake()
@@ -40,14 +40,22 @@ public class Level : MonoBehaviour
 
     private void Start()
     {
+        _state = State.WaitingToStart;
         _pipeSpawnTimerMax = 1f;
         SetDifficulty(Difficulty.Easy);
         SetLeftBound();
+        Bird.instance.OnStartedPlaying += OnStartedPlaying;
         Bird.instance.OnDeath += OnDeath;
+    }
+
+    private void OnStartedPlaying()
+    {
+        _state = State.Playing;
     }
 
     private void OnDestroy()
     {
+        Bird.instance.OnStartedPlaying -= OnStartedPlaying;
         Bird.instance.OnDeath -= OnDeath;
     }
 
@@ -73,7 +81,7 @@ public class Level : MonoBehaviour
 
     private void Update()
     {
-        if (_state == State.Death) return;
+        if (_state is State.Death or State.WaitingToStart) return;
         HandlePipeMovement();
         HandlePipeSpawning();
     }
