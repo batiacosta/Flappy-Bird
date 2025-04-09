@@ -37,6 +37,7 @@ public class Bird : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         SetState(State.Dead);
+        SoundManager.PlaySound(SoundManager.Sound.Lose);
     }
 
     private void OnTap()
@@ -48,6 +49,7 @@ public class Bird : MonoBehaviour
     private void Jump()
     {
         _rigidbody.linearVelocityY = Vector2.up.y * JUMP_VALUE;
+        SoundManager.PlaySound(SoundManager.Sound.BirdJump);
     }
 
     private void SetState(State state)
