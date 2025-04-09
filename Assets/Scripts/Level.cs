@@ -211,6 +211,7 @@ public class Level : MonoBehaviour
                 {
                     _achievedPipes = _achievedPipes + 0.5f;
                     _hasPassedBird = true;
+                    SoundManager.PlaySound(SoundManager.Sound.Score);
                 }
             }
         }
