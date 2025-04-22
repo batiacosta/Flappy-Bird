@@ -7,10 +7,11 @@ using Random = UnityEngine.Random;
 
 public class PipesManager : MonoBehaviour
 {
-    public static PipesManager instance { get; private set; }
     
     [SerializeField] private Transform lowestBoundary;
     [SerializeField] private Transform[] clouds;
+    [SerializeField] private Transform pipeHeadPrefab;
+    [SerializeField] private Transform pipeBodyPrefab;
 
     private const float PipeWidth = 7.8f;
     private const float PipeHeadHeight = 3.75f;
@@ -28,19 +29,9 @@ public class PipesManager : MonoBehaviour
     {
         Easy, Medium, Hard, Impossible
     }
-
-    private enum State
-    {
-        WaitingToStart, Playing, Death
-    }
     private Difficulty _difficulty = Difficulty.Easy;
     private int _spawnedPipes;
-
-    private void Awake()
-    {
-        instance = this;
-    }
-
+    
     private void Start()
     {
         _groundStartPosition = lowestBoundary.position;
@@ -92,8 +83,8 @@ public class PipesManager : MonoBehaviour
     private void Update()
     {
         if (GameManager.GameState != GameManager.State.Playing) return;
-        HandlePipeMovement();
         HandlePipeSpawning();
+        HandlePipeMovement();
         HandleBounrariesMovement();
         HandleCloudsMovement();
     }
@@ -125,12 +116,13 @@ public class PipesManager : MonoBehaviour
         if (_pipeSpawnTimer < 0)
         {
             _pipeSpawnTimer += _pipeSpawnTimerMax;
+            
             var heightEdgeLimit = 10f;
             var minHeight = _gapSize / 2 + heightEdgeLimit;
             var totalHeight = CameraOrthoSize * 2;
             var maxHeight = totalHeight - _gapSize / 2 - heightEdgeLimit;
             var height = Random.Range(minHeight, maxHeight);
-            CreateGapPipes(50, height, -_leftBound + PipeWidth*2);
+            CreateGapPipes(height, _gapSize, -_leftBound + PipeWidth*2);
         }
     }
 
@@ -185,7 +177,7 @@ public class PipesManager : MonoBehaviour
         pipeBodyBoxCollider.size = new Vector2(PipeWidth, height);
         pipeBodyBoxCollider.offset = new Vector2(0f, height/2);
         
-        var pipe = new Pipe(pipeHead, pipeBody);
+        var pipe = new Pipe(pipeHead, pipeBody, createBottom);
         _pipes.Add(pipe);
     }
 
@@ -227,11 +219,13 @@ public class PipesManager : MonoBehaviour
         private Transform _pipeHead;
         private Transform _pipeBody;
         private bool _hasPassedBird = false;
+        private bool _isGroundPipe = false;
 
-        public Pipe(Transform pipeHead, Transform pipeBody)
+        public Pipe(Transform pipeHead, Transform pipeBody, bool isGroundPipe = false)
         {
             _pipeHead = pipeHead;
             _pipeBody = pipeBody;
+            _isGroundPipe = isGroundPipe;
         }
 
         public void Move()
@@ -245,6 +239,7 @@ public class PipesManager : MonoBehaviour
                     _achievedPipes = _achievedPipes + 0.5f;
                     _hasPassedBird = true;
                     SoundManager.PlaySound(SoundManager.Sound.Score);
+                    if(_isGroundPipe) Score.UpdateScore();
                 }
             }
         }

@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public static class Score
 {
+    public static Action<int> OnScoreChanged;
+    public static int CurrentScore = 0;
     public static int GetHighScore()
     {
         return PlayerPrefs.GetInt("HighScore", 0);
@@ -9,6 +12,7 @@ public static class Score
 
     public static void SetHighScore(int score)
     {
+        
         if (score > GetHighScore()){
             Debug.Log($"High score is: {score}");
             PlayerPrefs.SetInt("HighScore", score);
@@ -20,5 +24,17 @@ public static class Score
     {
         PlayerPrefs.DeleteKey("HighScore");
         PlayerPrefs.Save();
+    }
+    
+    public static void UpdateScore()
+    {
+        CurrentScore++;
+        OnScoreChanged?.Invoke(CurrentScore);
+    }
+
+    public static void ResetScore()
+    {
+        CurrentScore = 0;
+        OnScoreChanged?.Invoke(CurrentScore);
     }
 }

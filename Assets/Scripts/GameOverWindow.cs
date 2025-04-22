@@ -29,7 +29,7 @@ public class GameOverWindow : MonoBehaviour
     private void OnDeath()
     {
         Show();
-        scoreText.text = "YOUR SCORE: " + PipesManager.instance.GetAchievedPipes().ToString();
+        scoreText.text = "YOUR SCORE: " + Score.CurrentScore.ToString();
         highScoreText.text = "HIGHEST SCORE: " + Score.GetHighScore().ToString();
     }
 

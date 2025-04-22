@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Score.ResetScore();
         SetState(State.Begin);
     }
 

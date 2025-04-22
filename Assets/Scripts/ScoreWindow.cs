@@ -10,10 +10,18 @@ public class ScoreWindow : MonoBehaviour
    private void Start()
    {
       highScoreText.text = "Highest score: " + Score.GetHighScore();
+      OnScoreChanged(Score.CurrentScore);
+      Score.OnScoreChanged += OnScoreChanged;
+   }
+   private void OnDestroy()
+   {
+      Score.OnScoreChanged -= OnScoreChanged;
    }
 
-   private void Update()
+   private void OnScoreChanged(int score)
    {
-      scoreText.text = PipesManager.instance.GetAchievedPipes().ToString();
+      scoreText.text = Score.CurrentScore.ToString();
    }
+
+   
 }

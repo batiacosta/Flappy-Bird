@@ -2200,6 +2200,8 @@ MonoBehaviour:
   - {fileID: 1446544589}
   - {fileID: 122133370}
   - {fileID: 677000501}
+  pipeHeadPrefab: {fileID: 11243101796267249, guid: 4c0e6ae6dd29447189016ad9f91a5557, type: 3}
+  pipeBodyPrefab: {fileID: 590789687752366156, guid: a56361c8103a34c69a421bf166539fb1, type: 3}
 --- !u!4 &1633170108
 Transform:
   m_ObjectHideFlags: 0
