@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
-public class Level : MonoBehaviour
+public class PipesManager : MonoBehaviour
 {
-    public static Level instance { get; private set; }
+    public static PipesManager instance { get; private set; }
     
     [SerializeField] private Transform lowestBoundary;
     [SerializeField] private Transform[] clouds;
@@ -34,7 +34,6 @@ public class Level : MonoBehaviour
         WaitingToStart, Playing, Death
     }
     private Difficulty _difficulty = Difficulty.Easy;
-    private State _state = State.WaitingToStart;
     private int _spawnedPipes;
 
     private void Awake()
@@ -46,28 +45,33 @@ public class Level : MonoBehaviour
     {
         _groundStartPosition = lowestBoundary.position;
         _achievedPipes = 0;
-        _state = State.WaitingToStart;
         _pipeSpawnTimerMax = 1f;
         SetDifficulty(Difficulty.Easy);
         SetLeftBound();
-        Bird.instance.OnStartedPlaying += OnStartedPlaying;
-        Bird.instance.OnDeath += OnDeath;
+        GameManager.OnStateChange += OnStateChanged;
     }
 
-    private void OnStartedPlaying()
+    private void OnStateChanged(GameManager.State gameState)
     {
-        _state = State.Playing;
+        switch (gameState)
+        {
+            case GameManager.State.GameOver:
+                OnDeath();
+                break;
+            case GameManager.State.Begin:
+                break;
+            case GameManager.State.Playing:
+                break;
+        }
     }
 
     private void OnDestroy()
     {
-        Bird.instance.OnStartedPlaying -= OnStartedPlaying;
-        Bird.instance.OnDeath -= OnDeath;
+        GameManager.OnStateChange -= OnStateChanged;
     }
 
     private void OnDeath()
     {
-        _state = State.Death;
         Score.SetHighScore((int)Math.Round(_achievedPipes, 0));
     }
 
@@ -87,7 +91,7 @@ public class Level : MonoBehaviour
 
     private void Update()
     {
-        if (_state is State.Death or State.WaitingToStart) return;
+        if (GameManager.GameState != GameManager.State.Playing) return;
         HandlePipeMovement();
         HandlePipeSpawning();
         HandleBounrariesMovement();

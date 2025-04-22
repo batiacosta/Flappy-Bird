@@ -14,6 +14,6 @@ public class ScoreWindow : MonoBehaviour
 
    private void Update()
    {
-      scoreText.text = Level.instance.GetAchievedPipes().ToString();
+      scoreText.text = PipesManager.instance.GetAchievedPipes().ToString();
    }
 }

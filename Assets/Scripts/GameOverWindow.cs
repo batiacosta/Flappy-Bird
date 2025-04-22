@@ -12,19 +12,24 @@ public class GameOverWindow : MonoBehaviour
 
     private void Start()
     {
-        Bird.instance.OnDeath += OnDeath;
+        GameManager.OnStateChange += OnStateChange;
         Hide();
     }
 
     private void OnDestroy()
     {
-        Bird.instance.OnDeath -= OnDeath;
+        GameManager.OnStateChange -= OnStateChange;
+    }
+
+    private void OnStateChange(GameManager.State state)
+    {
+        if(state == GameManager.State.GameOver) OnDeath();
     }
 
     private void OnDeath()
     {
         Show();
-        scoreText.text = "YOUR SCORE: " + Level.instance.GetAchievedPipes().ToString();
+        scoreText.text = "YOUR SCORE: " + PipesManager.instance.GetAchievedPipes().ToString();
         highScoreText.text = "HIGHEST SCORE: " + Score.GetHighScore().ToString();
     }
 
