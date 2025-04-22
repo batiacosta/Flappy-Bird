@@ -14,7 +14,6 @@ public static class Score
     {
         
         if (score > GetHighScore()){
-            Debug.Log($"High score is: {score}");
             PlayerPrefs.SetInt("HighScore", score);
             PlayerPrefs.Save();
         }

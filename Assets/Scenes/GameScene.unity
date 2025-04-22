@@ -263,6 +263,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 188619840}
+  - component: {fileID: 188619841}
   m_Layer: 0
   m_Name: Clouds
   m_TagString: Untagged
@@ -288,6 +289,23 @@ Transform:
   - {fileID: 677000501}
   m_Father: {fileID: 1633170108}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &188619841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188619839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b37c9b8f5f0e48dc986d9a703d98d3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clouds:
+  - {fileID: 1446544589}
+  - {fileID: 122133370}
+  - {fileID: 677000501}
+  cloudSpeed: 25
 --- !u!1 &260222752
 GameObject:
   m_ObjectHideFlags: 0
@@ -1653,6 +1671,7 @@ GameObject:
   - component: {fileID: 1375620520}
   - component: {fileID: 1375620519}
   - component: {fileID: 1375620521}
+  - component: {fileID: 1375620522}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -1776,6 +1795,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 425, y: 9.52}
   m_EdgeRadius: 0
+--- !u!114 &1375620522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375620518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a411a576a1d234e8baf64a922a53e37c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundTransform: {fileID: 1375620520}
 --- !u!1 &1442273455
 GameObject:
   m_ObjectHideFlags: 0
@@ -2175,6 +2207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1633170108}
+  - component: {fileID: 1633170109}
   - component: {fileID: 1633170107}
   m_Layer: 0
   m_Name: Level
@@ -2196,10 +2229,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lowestBoundary: {fileID: 1375620520}
-  clouds:
-  - {fileID: 1446544589}
-  - {fileID: 122133370}
-  - {fileID: 677000501}
   pipeHeadPrefab: {fileID: 11243101796267249, guid: 4c0e6ae6dd29447189016ad9f91a5557, type: 3}
   pipeBodyPrefab: {fileID: 590789687752366156, guid: a56361c8103a34c69a421bf166539fb1, type: 3}
 --- !u!4 &1633170108
@@ -2220,6 +2249,18 @@ Transform:
   - {fileID: 188619840}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1633170109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633170106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab75a961cf40421ba01395b3a2905b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1640570230
 GameObject:
   m_ObjectHideFlags: 0

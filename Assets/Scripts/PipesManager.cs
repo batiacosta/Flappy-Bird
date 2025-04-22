@@ -9,7 +9,6 @@ public class PipesManager : MonoBehaviour
 {
     
     [SerializeField] private Transform lowestBoundary;
-    [SerializeField] private Transform[] clouds;
     [SerializeField] private Transform pipeHeadPrefab;
     [SerializeField] private Transform pipeBodyPrefab;
 
@@ -23,7 +22,6 @@ public class PipesManager : MonoBehaviour
     private float _pipeSpawnTimerMax = 0;
     private float _gapSize = 0;
     private static float _achievedPipes = 0;
-    private Vector3 _groundStartPosition;
 
     private enum Difficulty
     {
@@ -34,11 +32,10 @@ public class PipesManager : MonoBehaviour
     
     private void Start()
     {
-        _groundStartPosition = lowestBoundary.position;
         _achievedPipes = 0;
         _pipeSpawnTimerMax = 1f;
         SetDifficulty(Difficulty.Easy);
-        SetLeftBound();
+        _leftBound = Level.Instance.LeftBound;
         GameManager.OnStateChange += OnStateChanged;
     }
 
@@ -72,43 +69,15 @@ public class PipesManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    private void SetLeftBound() // Can be public to be call when the screen resizes
-    {
-        var cameraOrtho = Camera.main.orthographicSize * 2;
-        var cameraWith = cameraOrtho * Camera.main.aspect;
-        var cameraPositionX = Camera.main.transform.position.x;
-        _leftBound = cameraPositionX - (cameraWith / 2);
-    }
+    
 
     private void Update()
     {
         if (GameManager.GameState != GameManager.State.Playing) return;
         HandlePipeSpawning();
         HandlePipeMovement();
-        HandleBounrariesMovement();
-        HandleCloudsMovement();
     }
-
-    private void HandleCloudsMovement()
-    {
-        foreach (var cloud in clouds)
-        {
-            cloud.Translate(Vector3.left * PipeSpeed * 0.9f * Time.deltaTime);// 0.95 to create parallaxs
-            if (cloud.position.x < _leftBound - cloud.GetComponent<SpriteRenderer>().bounds.size.x)
-            {
-                cloud.position = new Vector2(-_leftBound + cloud.GetComponent<SpriteRenderer>().bounds.size.x, cloud.position.y);
-            }
-        }
-    }
-
-    private void HandleBounrariesMovement()
-    {
-        lowestBoundary.Translate(Vector2.left * PipeSpeed * Time.deltaTime);
-        if (lowestBoundary.position.x < 0)
-        {
-            lowestBoundary.position = _groundStartPosition;
-        }
-    }
+    
 
     private void HandlePipeSpawning()
     {
@@ -171,7 +140,7 @@ public class PipesManager : MonoBehaviour
         pipeBody.SetPositionAndRotation(new Vector2(xPosition, pipeBodyPositionY), Quaternion.identity);
         
         var pipeBodyRenderer = pipeBody.gameObject.GetComponent<SpriteRenderer>(); ;
-        pipeBodyRenderer.drawMode = SpriteDrawMode.Sliced; // Making sure Sliced is selected to be able to set size
+        pipeBodyRenderer.drawMode = SpriteDrawMode.Sliced; 
         pipeBodyRenderer.size = new Vector2(PipeWidth, height);
         var pipeBodyBoxCollider = pipeBody.gameObject.GetComponent<BoxCollider2D>();
         pipeBodyBoxCollider.size = new Vector2(PipeWidth, height);
@@ -211,9 +180,6 @@ public class PipesManager : MonoBehaviour
                 break;
         }
     }
-
-    public int GetSpawnedPipesNumber() => _spawnedPipes;
-
     private class Pipe
     {
         private Transform _pipeHead;
@@ -251,7 +217,4 @@ public class PipesManager : MonoBehaviour
             Destroy(_pipeBody.gameObject);
         }
     }
-    
-    public float GetAchievedPipes() => _achievedPipes;
-    
 }
