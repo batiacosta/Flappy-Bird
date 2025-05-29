@@ -7,12 +7,13 @@ public class InGameScoreUI : MonoBehaviour
     private VisualElement _instructionsContainer;
     private Label _scoreText;
     private Label _maxScoreText;
+    private VisualElement _root;
     private void Start()
     {
-        var root = GetComponent<UIDocument>().rootVisualElement;
-        _maxScoreText = root.Q<Label>("MaxScoreLabel");
-        _scoreText = root.Q<Label>("ScoreLabel");
-        _instructionsContainer = root.Q<VisualElement>("InstructionsContainer");
+        _root = GetComponent<UIDocument>().rootVisualElement;
+        _maxScoreText = _root.Q<Label>("MaxScoreLabel");
+        _scoreText = _root.Q<Label>("ScoreLabel");
+        _instructionsContainer = _root.Q<VisualElement>("InstructionsContainer");
         
         OnGameStateChanged(GameManager.GameState);
         OnScoreChanged(Score.CurrentScore);
@@ -23,6 +24,7 @@ public class InGameScoreUI : MonoBehaviour
 
     private void OnGameStateChanged(GameManager.State gameState)
     {
+        _root.style.display = gameState is GameManager.State.Begin or GameManager.State.Playing ? DisplayStyle.Flex : DisplayStyle.None;
         _instructionsContainer.style.display = gameState == GameManager.State.Begin ? DisplayStyle.Flex : DisplayStyle.None;
     }
 

@@ -24,7 +24,7 @@ public static class Loader
 
     private static async Awaitable Await(Action action)
     {
-        await Awaitable.WaitForSecondsAsync(0.5f);
+        await Awaitable.WaitForSecondsAsync(0.25f);
         action?.Invoke();
     }
 }
