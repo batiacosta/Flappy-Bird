@@ -120,34 +120,34 @@ public class PipesManager : MonoBehaviour
     }
     private void CreatePipe(float height, float xPosition, bool createBottom)
     {
-        var pipeHeadPositionY = 0f;
-        var pipeBodyPositionY = 0f;
-        var pipeHead = Instantiate(GameAssets.GetInstance().GetPipeHead());
-        var pipeBody = Instantiate(GameAssets.GetInstance().GetPipeBody());
-        if (createBottom)
-        {
-            pipeHeadPositionY = height - (PipeHeadHeight / 2) - CameraOrthoSize;
-            pipeBodyPositionY = -CameraOrthoSize;
-        }
-        else
-        {
-            pipeHeadPositionY = CameraOrthoSize - height + PipeHeadHeight / 2;
-            pipeBodyPositionY = CameraOrthoSize;
-            pipeBody.localScale = new Vector3(1, -1, 1); // So it grows inverted
-        }
-        
-        pipeHead.SetPositionAndRotation(new Vector2(xPosition, pipeHeadPositionY), Quaternion.identity);
-        pipeBody.SetPositionAndRotation(new Vector2(xPosition, pipeBodyPositionY), Quaternion.identity);
-        
-        var pipeBodyRenderer = pipeBody.gameObject.GetComponent<SpriteRenderer>(); ;
-        pipeBodyRenderer.drawMode = SpriteDrawMode.Sliced; 
-        pipeBodyRenderer.size = new Vector2(PipeWidth, height);
-        var pipeBodyBoxCollider = pipeBody.gameObject.GetComponent<BoxCollider2D>();
-        pipeBodyBoxCollider.size = new Vector2(PipeWidth, height);
-        pipeBodyBoxCollider.offset = new Vector2(0f, height/2);
-        
-        var pipe = new Pipe(pipeHead, pipeBody, createBottom);
-        _pipes.Add(pipe);
+        // var pipeHeadPositionY = 0f;
+        // var pipeBodyPositionY = 0f;
+        // var pipeHead = Instantiate(GameAssets.GetInstance().GetPipeHead());
+        // var pipeBody = Instantiate(GameAssets.GetInstance().GetPipeBody());
+        // if (createBottom)
+        // {
+        //     pipeHeadPositionY = height - (PipeHeadHeight / 2) - CameraOrthoSize;
+        //     pipeBodyPositionY = -CameraOrthoSize;
+        // }
+        // else
+        // {
+        //     pipeHeadPositionY = CameraOrthoSize - height + PipeHeadHeight / 2;
+        //     pipeBodyPositionY = CameraOrthoSize;
+        //     pipeBody.localScale = new Vector3(1, -1, 1); // So it grows inverted
+        // }
+        //
+        // pipeHead.SetPositionAndRotation(new Vector2(xPosition, pipeHeadPositionY), Quaternion.identity);
+        // pipeBody.SetPositionAndRotation(new Vector2(xPosition, pipeBodyPositionY), Quaternion.identity);
+        //
+        // var pipeBodyRenderer = pipeBody.gameObject.GetComponent<SpriteRenderer>(); ;
+        // pipeBodyRenderer.drawMode = SpriteDrawMode.Sliced; 
+        // pipeBodyRenderer.size = new Vector2(PipeWidth, height);
+        // var pipeBodyBoxCollider = pipeBody.gameObject.GetComponent<BoxCollider2D>();
+        // pipeBodyBoxCollider.size = new Vector2(PipeWidth, height);
+        // pipeBodyBoxCollider.offset = new Vector2(0f, height/2);
+        //
+        // var pipe = new Pipe(pipeHead, pipeBody, createBottom);
+        // _pipes.Add(pipe);
     }
 
     private Difficulty GetDifficulty()

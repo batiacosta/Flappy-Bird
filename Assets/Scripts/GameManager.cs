@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] GameAssetsSO selectedAssets;
+
+    public GameAssetsSO SelectedAssets
+    {
+        get => selectedAssets;
+    }
     public static Action<State> OnStateChange;
     public enum State
     {

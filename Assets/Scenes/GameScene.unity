@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c680bd1b6acc44bda79aa6d14f85153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedAssets: {fileID: 0}
 --- !u!1 &122133369
 GameObject:
   m_ObjectHideFlags: 0
@@ -1663,7 +1664,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameAssets
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1617807081297454223, guid: 8b0268f7cd49e4925883074a37d9308d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
