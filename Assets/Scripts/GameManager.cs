@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameAssetsSO selectedAssets;
+    [SerializeField] static GameAssetsSO selectedAssets;
 
     public GameAssetsSO SelectedAssets
     {

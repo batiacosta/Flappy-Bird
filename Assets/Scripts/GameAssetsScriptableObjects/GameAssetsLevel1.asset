@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca01231118c55441c8cee1c693df7937, type: 3}
   m_Name: GameAssetsLevel1
   m_EditorClassIdentifier: 
-  ground: {fileID: 0}
-  pipeBody: {fileID: 0}
-  pipeHead: {fileID: 0}
-  backgroundMusic: {fileID: 0}
-  flapSound: {fileID: 0}
-  hitSound: {fileID: 0}
+  ground: {fileID: 9135437276427009489, guid: 57748fc814aa74254a09e24ad7f43112, type: 3}
+  pipeBody: {fileID: -1969497438595790671, guid: 9ca4d31f11815440eb04b3fcdc95a41a, type: 3}
+  pipeHead: {fileID: -1006212045, guid: 9ca4d31f11815440eb04b3fcdc95a41a, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: 55762176e355a49a5946be2fc4037a79, type: 3}
+  flapSound: {fileID: 8300000, guid: df7daae18ffb34cc49a77cd74cefa60e, type: 3}
+  gameOverSound: {fileID: 8300000, guid: 309aff7ca26e44bba83e25505a8e0c3b, type: 3}

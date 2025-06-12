@@ -8,18 +8,12 @@ public class GameAssetsSO : ScriptableObject
     [SerializeField] private Sprite pipeHead;
     [SerializeField] private AudioClip backgroundMusic;
     [SerializeField] private AudioClip flapSound;
-    [SerializeField] private AudioClip hitSound;
-    
-
+    [SerializeField] private AudioClip gameOverSound;
     
     public Sprite PipeHead => pipeHead;
     public Sprite PipeBody => pipeBody;
     public Sprite Ground => ground;
-
-    
-    public class SoundAudioClip
-    {
-        public SoundManager.Sound sound;
-        public AudioClip audioClip;
-    }
+    public AudioClip BackgroundMusic => backgroundMusic;
+    public AudioClip FlapSound => flapSound;
+    public AudioClip GameOverSound => gameOverSound;
 }
